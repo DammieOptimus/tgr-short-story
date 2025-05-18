@@ -335,6 +335,31 @@
              p.intro-paragraph::first-letter { font-size: 3em;}
         }
 
+        /* START: FOOTER CSS */
+        .novel-footer {
+            text-align: center;
+            padding: 20px;
+            margin-top: 60px; /* Adjust as needed */
+            border-top: 1px solid var(--secondary-dark);
+            font-family: var(--font-sans);
+            font-size: 0.9rem;
+            color: var(--text-medium);
+        }
+        /* END: FOOTER CSS */
+        
+        /* START: FOOTER LINK CSS */
+        .novel-footer .footer-link {
+            color: var(--accent-teal); /* Or var(--accent-gold) or var(--text-light) if you prefer */
+            text-decoration: none;
+            font-weight: 600; /* Optional: make it slightly bolder */
+            transition: color 0.3s ease;
+        }
+
+        .novel-footer .footer-link:hover {
+            color: var(--link-hover); /* Defined in your :root, or choose another hover color */
+            text-decoration: underline;
+        }
+        /* END: FOOTER LINK CSS */
     </style>
 </head>
 <body>
@@ -642,6 +667,12 @@
         </main>
     </div>
 
+    <!-- START: UPDATED FOOTER HTML -->
+    <footer class="novel-footer">
+        <p>© <span id="currentYear"></span> <a href="https://dammieoptimus.github.io/tgrstartnow/?d=eyJyZWYiOiJEYW1taWVPcHRpbXVzMiIsIm5hbWUiOiJEYW1taWUgKE9wdGltdXMpIEF5b2RlbGUiLCJwaG9uZSI6IjA4MDI4OTc1ODE2IiwicGljIjoiaHR0cHM6Ly9pLmltZ3VyLmNvbS9xcVVFNGFyLmpwZyJ9" target="_blank" class="footer-link">Dammie Optimus Solutions</a>. All rights reserved.</p>
+    </footer>
+    <!-- END: UPDATED FOOTER HTML -->
+
     <a href="#" class="whatsapp-button whatsapp-link" target="_blank" title="Chat on WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </a>
@@ -684,6 +715,13 @@
             document.querySelectorAll('.referral-id-text').forEach(el => {
                 el.textContent = REFERRAL_ID;
             });
+
+            // START: JAVASCRIPT FOR AUTO-UPDATING YEAR
+            const yearSpan = document.getElementById('currentYear');
+            if (yearSpan) {
+                yearSpan.textContent = new Date().getFullYear();
+            }
+            // END: JAVASCRIPT FOR AUTO-UPDATING YEAR
         });
     </script>
 
