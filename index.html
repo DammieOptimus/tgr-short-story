@@ -83,50 +83,68 @@
             padding: 20px;
         }
 
-        /* START: REVISED CSS FOR PORTRAIT BOOK COVER DISPLAY */
+        /* START: SIMPLIFIED & RESPONSIVE CSS FOR PORTRAIT BOOK COVER DISPLAY */
         .novel-cover-display {
             /* --- Container for the Book Cover --- */
-            display: flex; /* Use flexbox to easily center the book cover */
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically (if you give it a fixed height, otherwise centers within its flow) */
-            padding: 40px 20px; /* Generous padding around the cover area */
-            margin-top: 30px;   /* Space from the top of the browser */
-            margin-bottom: 50px;/* Space before the novel header */
-            /* No specific width/height here, let the image define it mostly */
+            /* This container's main job is to provide top/bottom margin
+               and act as a general placement area. We won't use flex for centering the image
+               directly here if the image itself can handle its centering with margins. */
+            padding-top: 30px;    /* Space from the top of the browser */
+            padding-bottom: 40px; /* Space before the novel header */
+            text-align: center; /* This will help center the image if it's an inline-block or block with auto margins */
         }
 
         .novel-cover-display #randomCoverImage {
             /* --- The Book Cover Image Itself --- */
-            display: block;
-            /* Define max-height to control its vertical size relative to viewport */
-            max-height: 80vh; /* Example: Cover can be up to 80% of the viewport height */
-            /* Set a max-width to prevent it from becoming too wide on very large screens,
-               while still allowing it to be tall. This helps maintain a book-like proportion. */
-            max-width: 450px;  /* Adjust this based on your ideal cover width.
-                                   A typical book might be around 6 inches wide (approx 450px at 72dpi)
-                                   This helps maintain a portrait aspect even if the image file itself
-                                   could stretch wider. */
+            display: block; /* Or inline-block if you prefer for centering with text-align on parent */
+            /* --- Primary Size Constraints for Aspect Ratio --- */
+            max-height: 75vh; /* Control maximum vertical size */
+            max-width: 100%;  /* Allow it to be responsive to its container's width,
+                                 but will be further constrained by its own specific max-width for book shape below */
 
-            width: auto;  /* Let height dictate width to maintain aspect ratio */
-            height: auto; /* Let actual image height determine this, up to max-height */
+            /* --- Specific Max-Width for Book-like Proportion on Larger Screens --- */
+            /* On larger screens, it won't exceed this pixel width.
+               On smaller screens, it will be less than this. */
+            width: auto; /* Crucial for maintaining aspect ratio when height is constrained */
+                        /* It will effectively be 'max-content' up to the pixel max-width below */
 
-            border-radius: 8px; /* Slightly rounded corners for the book cover */
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6), /* Main shadow for depth */
-                        0 0 0 1.5px rgba(255, 255, 255, 0.15), /* Subtle light inner border/highlight */
-                        0 0 0 3px var(--primary-dark); /* Darker outer border for separation */
+            /* --- THIS IS THE KEY FOR BOOK SHAPE & RESPONSIVENESS --- */
+            /* Set a max-width that represents a good book width on desktop.
+               Then, for smaller screens, we'll ensure it doesn't exceed screen width minus some margins. */
+            max-width: 400px; /* e.g., Ideal book width on desktop */
 
 
-            /* To add a slight 3D perspective "thickness" if desired (optional) */
-            transform: perspective(1500px) rotateY(-3deg) rotateX(1deg);
-            transition: transform 0.3s ease-out;
+            height: auto; /* Maintain aspect ratio, driven by width or max-height */
+
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5),
+                        0 0 0 1px rgba(255, 255, 255, 0.08),
+                        0 0 0 2px var(--primary-dark);
+
+            /* --- Centering the image and providing side margins --- */
+            margin-left: auto;
+            margin-right: auto;
+            /* Add specific horizontal margins for smaller screens to prevent touching edges */
+            margin-left: max(5%, auto); /* Takes the larger of 5% or what 'auto' calculates for centering */
+            margin-right: max(5%, auto);/* This ensures at least 5% margin on each side on small screens */
         }
 
-        /* Optional hover effect for the 3D perspective */
-        .novel-cover-display #randomCoverImage:hover {
-            transform: perspective(1500px) rotateY(0deg) rotateX(0deg) scale(1.10);
+        /* Media query to refine for very small screens if the above isn't quite enough,
+           or to adjust the percentage margin. */
+        @media (max-width: 480px) {
+            .novel-cover-display #randomCoverImage {
+                max-height: 70vh; /* Adjust if needed for very small screens */
+                /* The max(5%, auto) margins should handle side spacing.
+                   If you need to be more aggressive on very small screens: */
+                /* margin-left: max(15px, auto); */ /* Ensure at least 15px fixed margin */
+                /* margin-right: max(15px, auto); */
+            }
+            .novel-cover-display {
+                 padding-top: 20px;
+                 padding-bottom: 30px;
+            }
         }
-
-        /* END: REVISED CSS FOR PORTRAIT BOOK COVER DISPLAY */
+        /* END: SIMPLIFIED & RESPONSIVE CSS FOR PORTRAIT BOOK COVER DISPLAY */
 
         .novel-header {
             text-align: center;
